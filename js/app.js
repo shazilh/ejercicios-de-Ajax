@@ -1,11 +1,11 @@
 var cargarPagina = function(){
   cargarPersonajes();
+  $(document).on("click", ".personaje", mostrarDetallePersonaje);
 }
 
 var cargarPersonajes = function(){
   var url ="http://swapi.co/api/people/";
   $.getJSON(url,function(response){
-    console.log(response);
     var personajes = response.results;
     var total = response.count;
     mostrarTotalPersonajes(total);
@@ -18,11 +18,25 @@ var mostrarTotalPersonajes = function(total){
 
 var mostrarPersonajes = function(personajes){
   var $ul= $("#personajes");
+    //console.log(personajes);
   // crear un li que se muestre en el html
-  personajes.forEach(function(personaje){
+  personajes.forEach(function(personaje){//por defecto nos va a dar una unidad, obtiene el valor de cada objeto
+      console.log(personaje);
     var $li = $("<li/>");
-    $li.text(personaje.name);
-    $ul.append($li);
+   // $li.text(personaje.name);
+    $li.addClass("personaje");
+    $li.attr("data-url",personaje.url);//le da el atributo de data-url a cada personaje
+    $li.text(personaje.name + " - " + personaje.height + "cm");   //crea un elemento li para cada nombre de personaje
+    $ul.append($li);       //agrega cada personaje a la lista
+      //console.log(personaje.name);  //obtenemos solo el nombre de los personajes.
   });
+    
 }
-$(document).ready(cargarPagina);
+var mostrarDetallePersonaje=function(){
+    //console.log(this);
+    alert("hola");
+};
+$(document).ready(cargarPagina);  //es mejor colocarlo despues de haber declarado la función cargarPagina p/hoisting
+
+//si usamos un JSON que está en la web no es necesario que levantemos un servidor, si consumimos uno que nosotros creamos sí es necesario levantarlo.
+//si usamos  un framework de css es mejor que utilicemos una plantilla para cambiar valores.
